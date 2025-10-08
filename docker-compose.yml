@@ -1,0 +1,50 @@
+services:
+  php:
+    build:
+      context: ./docker/php
+    volumes:
+      - ./laravel_app:/var/www/html
+    depends_on:
+      - postgres
+      - redis
+
+  node:
+    build:
+      context: ./laravel_app          # контекст — папка з package.json
+      dockerfile: ../docker/node/Dockerfile  # шлях до Dockerfile відносно контексту
+    volumes:
+      - ./laravel_app:/var/www/html
+      - /var/www/html/node_modules
+    ports:
+      - "5173:5173"
+    depends_on:
+      - php
+    command: npm run dev
+
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./laravel_app:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+
+  postgres:
+    build: ./docker/postgres
+    environment:
+      POSTGRES_USER: taxi_user
+      POSTGRES_PASSWORD: kiril
+      POSTGRES_DB: taxitown
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
