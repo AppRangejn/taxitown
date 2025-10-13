@@ -1,11 +1,11 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import path from 'path';
 
 export default defineConfig({
     plugins: [
         laravel({
-            // Тут повинен бути масив з JS і CSS файлами
             input: ['resources/css/app.css', 'resources/js/app.js'],
             refresh: true,
         }),
@@ -22,6 +22,13 @@ export default defineConfig({
         host: '0.0.0.0',
         hmr: {
             host: 'localhost',
+        },
+    },
+    build: {
+        outDir: path.resolve(__dirname, '../public'), // білд в public
+        emptyOutDir: true,
+        rollupOptions: {
+            input: ['resources/js/app.js', 'resources/css/app.css'],
         },
     },
 });

@@ -31,25 +31,33 @@ onMounted(() => {
 });
 
 const submit = async () => {
-    if (isProcessing.value) return;
-    isProcessing.value = true;
-    errors.value = {};
+    isProcessing.value = true
+    errors.value = {}
+
     try {
-        await axios.get('/sanctum/csrf-cookie');
-        const response = await axios.post('/login', form.value);
+        // беремо csrf-cookie
+        await axios.get('/sanctum/csrf-cookie', { withCredentials: true })
+
+        // робимо логін
+        const response = await axios.post('/login', form.value, { withCredentials: true })
+
         if (response.status === 204) {
-            window.location.href = "/";
+            // редірект після успіху
+            window.location.href = '/'
         }
     } catch (e) {
         if (e.response && e.response.status === 422) {
-            errors.value = e.response.data.errors;
+            errors.value = e.response.data.errors
         } else {
-            console.error("An unexpected error occurred:", e);
+            console.error('Unexpected error:', e)
         }
     } finally {
-        isProcessing.value = false;
+        isProcessing.value = false
     }
-};
+}
+
+
+
 </script>
 
 <template>

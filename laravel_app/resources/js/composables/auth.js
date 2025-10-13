@@ -1,30 +1,44 @@
 import { reactive } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+
+axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.withCredentials = true; // важливо для Sanctum
+
+const auth = reactive({
+    user: null,
+});
+
+const initCsrf = async () => {
+    try {
+        await axios.get('/sanctum/csrf-cookie');
+    } catch (err) {
+        console.warn('Не вдалося отримати CSRF cookie:', err);
+    }
+};
 
 export default function useAuth() {
-    const router = useRouter();
-    const auth = reactive({
-        user: null,
-    });
-
     const getAuth = async () => {
         try {
-            const response = await axios.get('/user');
-            auth.user = response.data;
-        } catch (e) {
+            await initCsrf();
+            const res = await axios.get('/api/user');
+            auth.user = res.data;
+        } catch (err) {
             auth.user = null;
+            console.warn('Не вдалося отримати дані користувача:', err.response?.data?.message || err.message);
         }
-    }
+    };
 
     const logout = async () => {
         try {
+            await initCsrf();
             await axios.post('/logout');
+        } catch (err) {
+            console.warn('Помилка при логауті:', err.response?.data?.message || err.message);
         } finally {
             auth.user = null;
-            window.location.href = "/";
+            window.location.href = '/';
         }
-    }
+    };
 
-    return { auth, getAuth, logout };
+    return { auth, getAuth, logout, initCsrf };
 }

@@ -1,17 +1,24 @@
+version: '3.9'
+
 services:
   php:
     build:
       context: ./docker/php
+    container_name: laravel-php
     volumes:
       - ./laravel_app:/var/www/html
     depends_on:
       - postgres
       - redis
+    # FPM вже слухає на 9000
+    ports:
+      - "9000:9000"
 
   node:
     build:
-      context: ./laravel_app          # контекст — папка з package.json
-      dockerfile: ../docker/node/Dockerfile  # шлях до Dockerfile відносно контексту
+      context: ./laravel_app
+      dockerfile: ../docker/node/Dockerfile
+    container_name: laravel-node
     volumes:
       - ./laravel_app:/var/www/html
       - /var/www/html/node_modules
@@ -21,9 +28,9 @@ services:
       - php
     command: npm run dev
 
-
   nginx:
     image: nginx:alpine
+    container_name: laravel-nginx
     ports:
       - "8080:80"
     volumes:
@@ -33,16 +40,20 @@ services:
       - php
 
   postgres:
-    build: ./docker/postgres
+    image: postgres:15-alpine
+    container_name: laravel-postgres
     environment:
       POSTGRES_USER: taxi_user
       POSTGRES_PASSWORD: kiril
       POSTGRES_DB: taxitown
     volumes:
       - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
 
   redis:
     image: redis:alpine
+    container_name: laravel-redis
     ports:
       - "6379:6379"
 
