@@ -2,24 +2,27 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\DriverController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\UserController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Маршрути в цьому файлі є "stateless" (без сесії) і призначені для
-| автентифікації за допомогою API-токенів, а не для вашого SPA.
-|
-| Всі маршрути для SPA були перенесені до `routes/web.php` для правильної
-| роботи з сесіями.
-|
-*/
+// --- Drivers CRUD ---
+Route::get('/drivers', [DriverController::class, 'index']);
+Route::get('/drivers/{id}', [DriverController::class, 'show']);
+Route::post('/drivers', [DriverController::class, 'store']);          // додати нового водія
+Route::put('/drivers/{id}', [DriverController::class, 'update']);    // оновлення водія
+Route::delete('/drivers/{id}', [DriverController::class, 'destroy']); // видалення
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    // Цей маршрут залишається для автентифікації за API-токеном
-    // (наприклад, для мобільних додатків) і не використовується
-    // вашим поточним SPA-додатком.
-    return $request->user();
+// --- Orders CRUD (адмінські) ---
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::post('/orders', [OrderController::class, 'store']);
 });
 
+// --- Users CRUD для SPA (можна теж через sanctum)
+Route::prefix('users')->middleware('auth:sanctum')->group(function () {
+    Route::get('/', [UserController::class, 'index']);
+    Route::post('/', [UserController::class, 'store']);
+    Route::post('/{user}', [UserController::class, 'update']);
+    Route::post('/{user}/delete', [UserController::class, 'destroy']);
+});

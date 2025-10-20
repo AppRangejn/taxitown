@@ -16,16 +16,24 @@ const initCsrf = async () => {
     }
 };
 
+const updateUser = (newUserData) => {
+    auth.user = newUserData ?? auth.user;
+};
+
 export default function useAuth() {
     const getAuth = async () => {
         try {
             await initCsrf();
             const res = await axios.get('/api/user');
-            auth.user = res.data;
+            auth.user = res.data || null;
         } catch (err) {
             auth.user = null;
-            console.warn('Не вдалося отримати дані користувача:', err.response?.data?.message || err.message);
+            console.warn(
+                'Не вдалося отримати дані користувача:',
+                err.response?.data?.message || err.message
+            );
         }
+        return auth.user;
     };
 
     const logout = async () => {
@@ -33,12 +41,18 @@ export default function useAuth() {
             await initCsrf();
             await axios.post('/logout');
         } catch (err) {
-            console.warn('Помилка при логауті:', err.response?.data?.message || err.message);
+            console.warn(
+                'Помилка при логауті:',
+                err.response?.data?.message || err.message
+            );
         } finally {
             auth.user = null;
             window.location.href = '/';
         }
     };
 
-    return { auth, getAuth, logout, initCsrf };
+    const isAuthenticated = () => !!auth.user;
+
+    // ✅ Єдиний правильний return:
+    return { auth, getAuth, logout, initCsrf, isAuthenticated, updateUser };
 }

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,19 +26,28 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 // --- ЄДИНИЙ БЛОК API-МАРШРУТІВ ДЛЯ SPA ---
+// --- ЄДИНИЙ БЛОК API-МАРШРУТІВ ДЛЯ SPA ---
 Route::prefix('api')->middleware('auth:sanctum')->group(function () {
 
-    // Отримання поточного користувача
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+    Route::get('/user', fn (Request $request) => $request->user());
 
-    // CRUD операції з користувачами
+    // --- CRUD користувачів ---
     Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
-    Route::post('/users/{user}', [UserController::class, 'update']);      // Оновлення через POST
-    Route::post('/users/{user}/delete', [UserController::class, 'destroy']); // Видалення через POST
+    Route::post('/users/{user}', [UserController::class, 'update']);
+    Route::post('/users/{user}/delete', [UserController::class, 'destroy']);
+
+    // --- Замовлення ---
+    Route::get('/orders', [OrderController::class, 'index']); // користувач бачить свої
+    Route::post('/orders', [OrderController::class, 'store']);
+    Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
+
+    // ✅ додай для адміна
+    Route::get('/admin/orders', [OrderController::class, 'indexAdmin']);
+    Route::put('/admin/orders/{id}', [OrderController::class, 'update']);
+    Route::delete('/admin/orders/{id}', [OrderController::class, 'destroy']);
 });
+
 
 
 // --- SPA Fallback Route (ЗАВЖДИ ОСТАННІЙ) ---

@@ -63,12 +63,18 @@
 import { ref, computed, onMounted } from 'vue';
 import useAuth from '../../composables/auth.js';
 import UserManagement from './UserManagement.vue';
+import DriverManagement from './DriverManagement.vue'
+import AdminOrders from './AdminOrders.vue'
 
 const { auth, getAuth } = useAuth();
 const isOpen = ref(false);
 const isAuthLoading = ref(true);
 
-const menuItems = [{ id: 'users', label: 'Користувачі', component: UserManagement }];
+const menuItems = [
+    { id: 'users', label: 'Користувачі', component: UserManagement },
+    { id: 'drivers', label: 'Водії', component: DriverManagement },
+    { id: 'orders', label: 'Замовлення', component: AdminOrders }
+]
 const selectedMenu = ref('users');
 
 const currentComponent = computed(() => {

@@ -2,24 +2,9 @@
 import { ref, onMounted } from 'vue';
 import { RouterLink } from 'vue-router';
 
-const theme = ref('light');
 const showScrollTop = ref(false);
 
-const applyTheme = () => {
-    if (theme.value === 'dark') {
-        document.documentElement.classList.add('dark');
-    } else {
-        document.documentElement.classList.remove('dark');
-    }
-};
-
 onMounted(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        theme.value = savedTheme;
-    }
-    applyTheme();
-
     window.addEventListener('scroll', () => {
         showScrollTop.value = window.scrollY > 100;
     });
@@ -32,22 +17,28 @@ const scrollToTop = () => {
 
 <template>
     <footer
-        class="w-full bg-[#1A1A1A] text-gray-300 border-t border-gray-800 shadow-inner"
+        class="w-full bg-gradient-to-r from-[#0d0d0d] via-[#1a1a1a] to-black text-gray-300 border-t border-yellow-400/20 shadow-[0_-4px_20px_rgba(255,215,0,0.05)]"
     >
-        <div class="container mx-auto px-4 sm:px-6 py-3">
+        <div class="container mx-auto px-6 py-6">
             <div
-                class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 text-sm"
+                class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 text-sm"
             >
-                <!-- Логотип -->
-                <div class="flex items-center space-x-2">
-                    <img src="/taxi-icon.png" alt="TaxiTown Logo" class="h-8 w-8" />
-                    <span class="text-lg font-semibold text-yellow-400 tracking-tight">
+                <!-- 🚕 Лого -->
+                <div class="flex items-center space-x-3">
+                    <img
+                        src="/taxi-icon.png"
+                        alt="TaxiTown Logo"
+                        class="h-10 w-10 drop-shadow-[0_0_10px_rgba(255,215,0,0.4)]"
+                    />
+                    <span
+                        class="text-xl font-extrabold text-yellow-400 tracking-tight hover:text-yellow-300 transition-all duration-300"
+                    >
                         TaxiTown
                     </span>
                 </div>
 
-                <!-- Посилання -->
-                <div class="flex space-x-6">
+                <!-- 🔗 Посилання -->
+                <div class="flex space-x-8 text-gray-400 font-medium">
                     <RouterLink
                         to="/contacts"
                         class="hover:text-yellow-400 transition-all duration-300 hover:scale-105"
@@ -62,13 +53,13 @@ const scrollToTop = () => {
                     </RouterLink>
                 </div>
 
-                <!-- Соцмережі -->
+                <!-- 🌐 Соцмережі -->
                 <div class="flex space-x-4">
                     <a
                         href="https://t.me/taxitown"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="hover:text-yellow-400 transition-all duration-300 hover:scale-110"
+                        class="p-2 rounded-full bg-gray-800 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-all duration-300 shadow-md hover:shadow-yellow-400/30 hover:scale-110"
                     >
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                             <path
@@ -80,7 +71,7 @@ const scrollToTop = () => {
                         href="https://instagram.com/taxitown"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="hover:text-yellow-400 transition-all duration-300 hover:scale-110"
+                        class="p-2 rounded-full bg-gray-800 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-all duration-300 shadow-md hover:shadow-yellow-400/30 hover:scale-110"
                     >
                         <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
                             <path
@@ -92,12 +83,17 @@ const scrollToTop = () => {
                 </div>
             </div>
 
-            <div class="mt-3 text-center text-xs text-gray-500">
-                © 2025 TaxiTown. Всі права захищено.
+            <!-- 📝 Підпис -->
+            <div
+                class="mt-5 text-center text-xs text-gray-500 border-t border-gray-800 pt-3"
+            >
+                © 2025
+                <span class="text-yellow-400 font-semibold">TaxiTown</span>. Усі права
+                захищено.
             </div>
         </div>
 
-        <!-- Кнопка "Вгору" -->
+        <!-- 🔝 Кнопка "Вгору" -->
         <button
             v-show="showScrollTop"
             @click="scrollToTop"
@@ -132,13 +128,7 @@ footer {
     }
 }
 
-/* Трохи нижчий футер */
-footer .container {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-}
-
-/* Адаптивність */
+/* 📱 Адаптивність */
 @media (max-width: 640px) {
     footer .container {
         @apply py-3 px-4;
@@ -146,7 +136,8 @@ footer .container {
     footer img {
         @apply h-7 w-7;
     }
-    footer a, footer span {
+    footer a,
+    footer span {
         @apply text-xs;
     }
     .fixed {

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 
 const form = ref({
     email: '',
@@ -11,7 +11,7 @@ const form = ref({
 const errors = ref({});
 const isProcessing = ref(false);
 const theme = ref('light'); // Змінна для теми
-
+const router = useRouter();
 // Логіка для зміни теми
 const applyTheme = () => {
     if (theme.value === 'dark') {
@@ -31,28 +31,25 @@ onMounted(() => {
 });
 
 const submit = async () => {
-    isProcessing.value = true
-    errors.value = {}
+    isProcessing.value = true;
+    errors.value = {};
 
     try {
-        // беремо csrf-cookie
-        await axios.get('/sanctum/csrf-cookie', { withCredentials: true })
-
-        // робимо логін
-        const response = await axios.post('/login', form.value, { withCredentials: true })
+        await axios.get('/sanctum/csrf-cookie');
+        const response = await axios.post('/login', form.value);
 
         if (response.status === 204) {
-            // редірект після успіху
-            window.location.href = '/'
+            // 3. Замінюємо редірект
+            await router.push('/');
         }
     } catch (e) {
         if (e.response && e.response.status === 422) {
-            errors.value = e.response.data.errors
+            errors.value = e.response.data.errors;
         } else {
-            console.error('Unexpected error:', e)
+            console.error('Unexpected error:', e);
         }
     } finally {
-        isProcessing.value = false
+        isProcessing.value = false;
     }
 }
 
