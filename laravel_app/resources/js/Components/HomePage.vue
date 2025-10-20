@@ -203,7 +203,7 @@
         <transition name="fade-up">
             <div
                 v-if="mapMode!=='normal'"
-                class="absolute bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-3xl rounded-2xl border shadow-2xl px-5 py-4 z-30 backdrop-blur-xl"
+                class="absolute bottom-20 left-1/2 -translate-x-1/2 w-[92%] max-w-3xl rounded-2xl border shadow-2xl px-5 py-4 z-30 backdrop-blur-xl"
                 :class="theme==='dark' ? 'bg-black/75 border-gray-700 text-white' : 'bg-white/80 border-gray-200 text-gray-900'"
             >
                 <div class="flex flex-col md:flex-row items-center justify-between gap-3">

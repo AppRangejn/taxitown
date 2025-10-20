@@ -92,23 +92,6 @@ const scrollToTop = () => {
                 захищено.
             </div>
         </div>
-
-        <!-- 🔝 Кнопка "Вгору" -->
-        <button
-            v-show="showScrollTop"
-            @click="scrollToTop"
-            class="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-yellow-400 text-black shadow-lg hover:bg-yellow-500 transition-all duration-300 hover:scale-110 focus:outline-none"
-            aria-label="Повернутися вгору"
-        >
-            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 10l7-7m0 0l7 7m-7-7v18"
-                />
-            </svg>
-        </button>
     </footer>
 </template>
 
