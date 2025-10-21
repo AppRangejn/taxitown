@@ -16,13 +16,11 @@ class Car extends Model
         'driver_id',
     ];
 
-    // Авто належить водію
     public function driver()
     {
         return $this->belongsTo(Driver::class);
     }
 
-    // Авто може мати багато замовлень
     public function orders()
     {
         return $this->hasMany(Order::class);

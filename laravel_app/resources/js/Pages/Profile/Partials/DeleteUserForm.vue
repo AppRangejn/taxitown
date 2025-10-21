@@ -35,7 +35,6 @@ const deleteUser = async () => {
 <template>
     <div class="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
 
-        <!-- Основний контент -->
         <main class="flex-grow flex justify-center items-center px-4">
             <div class="w-full max-w-md p-6 sm:p-8 bg-white dark:bg-gray-800/40
                   backdrop-blur-xl shadow-lg rounded-2xl border border-gray-200 dark:border-yellow-400/30
@@ -79,7 +78,6 @@ const deleteUser = async () => {
             </div>
         </main>
 
-        <!-- Footer -->
         <Footer />
     </div>
 </template>

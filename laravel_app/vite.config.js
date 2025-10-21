@@ -26,7 +26,7 @@ export default defineConfig({
         },
     },
     build: {
-        outDir: path.resolve(__dirname, '../public'), // білд в public
+        outDir: path.resolve(__dirname, '../public'),
         emptyOutDir: true,
         rollupOptions: {
             input: ['resources/js/app.js', 'resources/css/app.css'],

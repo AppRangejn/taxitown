@@ -23,7 +23,6 @@ const scrollToTop = () => {
             <div
                 class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 text-sm"
             >
-                <!-- 🚕 Лого -->
                 <div class="flex items-center space-x-3">
                     <img
                         src="/taxi-icon.png"
@@ -37,7 +36,6 @@ const scrollToTop = () => {
                     </span>
                 </div>
 
-                <!-- 🔗 Посилання -->
                 <div class="flex space-x-8 text-gray-400 font-medium">
                     <RouterLink
                         to="/contacts"
@@ -53,7 +51,6 @@ const scrollToTop = () => {
                     </RouterLink>
                 </div>
 
-                <!-- 🌐 Соцмережі -->
                 <div class="flex space-x-4">
                     <a
                         href="https://t.me/taxitown"
@@ -83,7 +80,6 @@ const scrollToTop = () => {
                 </div>
             </div>
 
-            <!-- 📝 Підпис -->
             <div
                 class="mt-5 text-center text-xs text-gray-500 border-t border-gray-800 pt-3"
             >
@@ -111,7 +107,6 @@ footer {
     }
 }
 
-/* 📱 Адаптивність */
 @media (max-width: 640px) {
     footer .container {
         @apply py-3 px-4;

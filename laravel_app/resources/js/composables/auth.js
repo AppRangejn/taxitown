@@ -2,7 +2,7 @@ import { reactive } from 'vue';
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:8080';
-axios.defaults.withCredentials = true; // важливо для Sanctum
+axios.defaults.withCredentials = true;
 
 const auth = reactive({
     user: null,
@@ -53,6 +53,5 @@ export default function useAuth() {
 
     const isAuthenticated = () => !!auth.user;
 
-    // ✅ Єдиний правильний return:
     return { auth, getAuth, logout, initCsrf, isAuthenticated, updateUser };
 }

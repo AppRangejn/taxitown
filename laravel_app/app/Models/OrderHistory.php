@@ -9,7 +9,7 @@ class OrderHistory extends Model
 {
     use HasFactory;
 
-    public $timestamps = false; // у нас є тільки changed_at
+    public $timestamps = false;
     protected $fillable = ['order_id', 'status', 'changed_at'];
 
     public function order()

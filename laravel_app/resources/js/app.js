@@ -24,13 +24,13 @@ app.use(Toast, {
     pauseOnHover: true,
 });
 
-// Робимо SweetAlert доступним глобально
+
 app.config.globalProperties.$swal = Swal;
 
-// 🔧 Замінюємо стандартний alert()
+
 window.alert = (message) => {
     Alert.info("Повідомлення", message);
 };
 
-// Експортуємо Alert для використання у будь-якому місці
+
 app.config.globalProperties.$alert = Alert;

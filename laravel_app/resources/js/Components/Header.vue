@@ -2,7 +2,6 @@
     <header class="bg-gradient-to-r from-gray-900 to-black shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 sm:px-6 py-4">
             <div class="flex items-center justify-between">
-                <!-- 🚕 Logo -->
                 <router-link to="/" class="flex items-center space-x-2 group">
                     <img src="/taxi-icon.png" alt="TaxiTown Logo" class="h-10 w-10 drop-shadow-md" />
                     <span
@@ -12,7 +11,6 @@
                     </span>
                 </router-link>
 
-                <!-- 🧭 Navigation -->
                 <nav class="flex items-center space-x-4 sm:space-x-8">
                     <router-link
                         to="/"
@@ -21,7 +19,6 @@
                         Головна
                     </router-link>
 
-                    <!-- 🔓 Гість -->
                     <template v-if="!auth.user">
                         <router-link to="/login" class="btn-outline">
                             Увійти
@@ -32,7 +29,6 @@
                         </router-link>
                     </template>
 
-                    <!-- 🔒 Авторизований -->
                     <template v-else>
                         <router-link to="/profile" class="btn-profile">
                             {{ auth.user.name }}
@@ -43,7 +39,6 @@
                         </button>
                     </template>
 
-                    <!-- 🌗 Theme -->
                     <button
                         @click="toggleTheme"
                         class="ml-3 p-2 rounded-full bg-gray-800 text-yellow-400 hover:bg-yellow-400 hover:text-black transition-all duration-300 shadow-md hover:shadow-yellow-400/30 hover:scale-110"
@@ -119,12 +114,10 @@ export default {
 </script>
 
 <style scoped>
-/* 🌑 Фон залишається темним градієнтом */
 .bg-gradient-to-r {
     background: linear-gradient(to right, #0d0d0d, #1a1a1a, #000000);
 }
 
-/* 🟡 Кнопка "Реєстрація" — жовте світіння */
 .btn-glow {
     @apply relative overflow-hidden px-6 py-2 rounded-full font-bold tracking-wide text-black bg-yellow-400 shadow-lg transition-all duration-300;
 }
@@ -134,7 +127,6 @@ export default {
     transform: scale(1.08);
 }
 
-/* 🟡 Контурна кнопка "Увійти" */
 .btn-outline {
     @apply relative overflow-hidden px-6 py-2 rounded-full font-bold tracking-wide border-2 transition-all duration-300;
     color: #facc15;
@@ -147,7 +139,6 @@ export default {
     transform: scale(1.08);
 }
 
-/* 👤 Профіль */
 .btn-profile {
     @apply px-5 py-2 rounded-full font-semibold text-yellow-300 bg-gray-800 hover:bg-yellow-400 hover:text-black transition-all duration-300 shadow-md;
 }
@@ -156,7 +147,6 @@ export default {
     box-shadow: 0 0 15px rgba(250, 204, 21, 0.5);
 }
 
-/* ❌ Вийти */
 .btn-danger {
     @apply px-5 py-2 rounded-full font-semibold text-white bg-red-600 hover:bg-gradient-to-r hover:from-red-500 hover:to-yellow-400 transition-all duration-300 shadow-md;
 }
@@ -165,7 +155,6 @@ export default {
     box-shadow: 0 0 18px rgba(255, 100, 100, 0.5);
 }
 
-/* 🖤 Дрібні ефекти */
 nav a,
 nav button {
     transition: all 0.25s ease;

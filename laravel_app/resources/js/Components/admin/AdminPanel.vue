@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- Floating Admin Button -->
         <button
             v-if="!isAuthLoading && auth.user?.role === 'admin'"
             @click="isOpen = true"
@@ -29,7 +28,6 @@
         </button>
 
 
-        <!-- Modal -->
         <transition name="fade">
             <div
                 v-if="isOpen"
@@ -38,7 +36,6 @@
             >
                 <div class="bg-white dark:bg-gray-800/40 rounded-2xl shadow-2xl border border-gray-200 dark:border-yellow-400/30 w-full max-w-6xl max-h-[90vh] flex flex-col overflow-hidden card-fade-in">
 
-                    <!-- Header -->
                     <div class="px-6 py-4 border-b dark:border-gray-600 flex justify-between items-center">
                         <h2 class="text-3xl font-extrabold text-gray-900 dark:text-white">Адмін-панель</h2>
                         <button @click="isOpen = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors duration-300">
@@ -48,7 +45,6 @@
                         </button>
                     </div>
 
-                    <!-- Menu -->
                     <div class="flex gap-4 px-6 py-4 border-b dark:border-gray-600 overflow-x-auto">
                         <button
                             v-for="item in menuItems"
@@ -65,7 +61,6 @@
                         </button>
                     </div>
 
-                    <!-- Content -->
                     <div class="flex-1 p-6 overflow-auto bg-gray-50 dark:bg-gray-900/50 transition-colors duration-300">
                         <component :is="currentComponent" />
                     </div>

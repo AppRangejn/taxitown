@@ -3,17 +3,14 @@
         class="relative min-h-screen overflow-hidden transition-colors duration-300"
         :class="theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'"
     >
-        <!-- 🗺️ Карта -->
         <div id="map" class="absolute inset-0 w-full h-full z-0 transition-all duration-700"></div>
 
-        <!-- 🌫️ Димка при звичайному режимі -->
         <div
             v-if="mapMode === 'normal'"
             class="absolute inset-0 z-10 backdrop-blur-md"
             :class="theme === 'dark' ? 'bg-black/30' : 'bg-white/30'"
         ></div>
 
-        <!-- 📋 Мої замовлення -->
         <transition name="slide-in-left">
             <div
                 v-if="orders.length"
@@ -65,13 +62,11 @@
         </transition>
 
 
-        <!-- 💳 Головна форма -->
         <div
             class="z-20 rounded-2xl shadow-2xl backdrop-blur-xl p-6 w-[420px] border transition-all duration-700"
             :class="[theme==='dark' ? 'bg-gray-800/90 border-gray-700' : 'bg-white/90 border-gray-200',
         formDocked ? 'fixed right-8 top-20' : 'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2']"
         >
-            <!-- Етапи -->
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-2 text-xs">
           <span class="px-2 py-1 rounded-full"
@@ -87,7 +82,6 @@
                 </div>
             </div>
 
-            <!-- 🔹 Етап 1 -->
             <transition name="fade">
                 <div v-if="stage === 1" class="space-y-3">
                     <h2 class="text-2xl font-bold mb-1">🚖 Замовлення поїздки</h2>
@@ -119,7 +113,6 @@
                 </div>
             </transition>
 
-            <!-- 🔹 Етап 2 -->
             <transition name="fade">
                 <div v-if="stage === 2" class="space-y-3">
                     <h2 class="text-2xl font-bold">🚗 Обери клас та водія</h2>
@@ -170,7 +163,6 @@
                 </div>
             </transition>
 
-            <!-- 🔹 Етап 3 -->
             <transition name="fade">
                 <div v-if="stage === 3" class="space-y-3">
                     <h2 class="text-2xl font-bold">✅ Перевір дані</h2>
@@ -199,7 +191,6 @@
             </transition>
         </div>
 
-        <!-- 🧭 Нижня панель -->
         <transition name="fade-up">
             <div
                 v-if="mapMode!=='normal'"
@@ -233,7 +224,6 @@ import axios from 'axios';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-// ===== ТЕМА
 const theme = ref(localStorage.getItem('theme') || 'light');
 const applyTheme = () => {
     if (theme.value === 'dark') document.documentElement.classList.add('dark');
@@ -251,17 +241,14 @@ onMounted(() => {
 });
 onBeforeUnmount(() => window.removeEventListener('storage', onStorage));
 
-// 🔥 миттєва реакція
 watch(theme, (val) => {
     localStorage.setItem('theme', val);
     applyTheme();
 });
 
-// ===== AXIOS
 axios.defaults.baseURL = 'http://localhost:8080';
 axios.defaults.withCredentials = true;
 
-// ===== СТАН
 const mapMode = ref('normal');
 const controlEnabled = ref(false);
 const formDocked = computed(() => mapMode.value !== 'normal');
@@ -277,17 +264,14 @@ const order = reactive({
 const travelTime = ref(0);
 const canGoNextFromStage1 = computed(() => !!(order.from && order.to && order.distance));
 
-// ===== ВОДІЇ
 const drivers = reactive({ economy: [], comfort: [], luxe: [] });
 const loadingDrivers = ref(false);
 const driverError = ref(null);
 
-// ===== ЗАМОВЛЕННЯ
 const orders = ref([]);
 const loadingOrders = ref(false);
 let tick = null;
 
-// ===== КАРТА
 let map, fromMarker, toMarker, routeLayer;
 
 onMounted(async () => {
@@ -315,7 +299,6 @@ function initMap() {
     });
 }
 
-// ===== РЕВЕРС ГЕО
 async function reverseGeocode({ lat, lng }) {
     try {
         const res = await fetch(
@@ -328,7 +311,6 @@ async function reverseGeocode({ lat, lng }) {
     }
 }
 
-// ===== ЦІНА У РЕАЛЬНОМУ ЧАСІ
 watch(
     () => [order.carType, order.driver, order.distance],
     () => {
@@ -340,7 +322,6 @@ watch(
     { deep: true }
 );
 
-// ===== ROUTE
 async function buildRoute() {
     if (!fromMarker || !toMarker) return alert('Вкажи дві точки');
     const from = fromMarker.getLatLng();
@@ -363,7 +344,6 @@ async function buildRoute() {
     mapMode.value = 'built';
 }
 
-// ===== ВОДІЇ
 async function loadDrivers() {
     loadingDrivers.value = true;
     try {
@@ -382,7 +362,6 @@ async function loadDrivers() {
     }
 }
 
-// ===== ORDERS
 async function loadOrders() {
     loadingOrders.value = true;
     try {
@@ -409,10 +388,7 @@ function startTimers() {
 async function cancelOrder(id) {
     if (!confirm('Ви впевнені, що хочете скасувати це замовлення?')) return;
     try {
-        // 👉 Спочатку отримуємо CSRF cookie
         await axios.get('/sanctum/csrf-cookie');
-
-        // Потім видаляємо
         await axios.delete(`/api/orders/${id}`);
         orders.value = orders.value.filter((o) => o.id !== id);
         alert('✅ Замовлення скасовано!');
@@ -423,7 +399,6 @@ async function cancelOrder(id) {
 }
 
 onMounted(() => loadOrders());
-// ===== ORDER SUBMIT
 async function submitOrder() {
     try {
         if (!order.from || !order.to || !order.driver) return alert('Заповни всі поля');
@@ -444,7 +419,6 @@ async function submitOrder() {
     }
 }
 
-// ===== ДОДАТКОВІ
 function enterRouteMode() {
     mapMode.value = 'route';
 }
@@ -468,9 +442,6 @@ function clearRoute() {
 
 
 <style scoped>
-/* === Анімації появи === */
-
-/* 🔸 Зліва (панель замовлень) */
 .slide-in-left-enter-active {
     transition: all 0.5s ease;
 }
@@ -478,8 +449,6 @@ function clearRoute() {
     transform: translateX(-100%);
     opacity: 0;
 }
-
-/* 🔸 Fade (плавна поява/зникнення контенту) */
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.3s ease;
@@ -488,8 +457,6 @@ function clearRoute() {
 .fade-leave-to {
     opacity: 0;
 }
-
-/* 🔸 Fade-up (знизу вверх для нижньої панелі) */
 .fade-up-enter-active,
 .fade-up-leave-active {
     transition: all 0.4s ease;
@@ -503,7 +470,6 @@ function clearRoute() {
     transform: translateY(24px);
 }
 
-/* === Кастомізація скролу (для списку замовлень) === */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -518,7 +484,6 @@ function clearRoute() {
     background-color: rgba(255, 255, 255, 0.25);
 }
 
-/* === Адаптивна поведінка === */
 @media (max-width: 768px) {
     .w-\[420px\] {
         width: 90%;
@@ -534,7 +499,6 @@ function clearRoute() {
     }
 }
 
-/* === Анімація зміни теми (м’який перехід між темною/світлою) === */
 :root,
 html,
 body {

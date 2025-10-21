@@ -11,6 +11,6 @@ class PageController extends Controller
      */
     public function home()
     {
-        return view('app'); // 'welcome' - це назва вашого головного blade-файлу
+        return view('app');
     }
 }

@@ -6,7 +6,6 @@
         </main>
         <Footer />
 
-        <!-- Admin Panel -->
         <AdminPanel v-if="!isAuthLoading && auth.user?.role === 'admin'" />
     </div>
 </template>
@@ -21,7 +20,6 @@ import useAuth from '../composables/auth.js';
 const { auth, getAuth } = useAuth();
 const isAuthLoading = ref(true);
 
-// Підтягуємо дані про користувача після монтування
 onMounted(async () => {
     await getAuth();
     isAuthLoading.value = false;

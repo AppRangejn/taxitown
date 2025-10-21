@@ -2,15 +2,7 @@ import Swal from "sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 import { useToast } from "vue-toastification";
 
-/**
- * Alert Utility (TaxiTown Edition)
- * Комбінує SweetAlert2 + Vue Toastification
- * Використовується для повідомлень, помилок, підтверджень, тостів
- */
 
-/**
- * 🌓 Автоматичне визначення теми (світла/темна)
- */
 function getThemeColors() {
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     if (prefersDark || document.documentElement.classList.contains("dark")) {
@@ -34,9 +26,7 @@ function getThemeColors() {
     }
 }
 
-/**
- * 🔧 Генерація базових налаштувань SweetAlert2 з урахуванням теми
- */
+
 function getBaseConfig() {
     const theme = getThemeColors();
     return {
@@ -52,9 +42,7 @@ function getBaseConfig() {
     };
 }
 
-/**
- * 🌟 Основний об’єкт Alert
- */
+
 const Alert = {
     // === TOAST (Toastification) ===
     toast(message = "Повідомлення", type = "info", timeout = 3000) {
@@ -75,7 +63,6 @@ const Alert = {
         }
     },
 
-    // === МОДАЛКИ SweetAlert2 ===
     success(title = "Успішно!", text = "", timer = 2000) {
         return Swal.fire({
             ...getBaseConfig(),
@@ -132,10 +119,7 @@ const Alert = {
     },
 };
 
-/**
- * 🌍 Глобальні заміни window.alert і window.confirm
- * (щоб навіть старий код автоматично використовував гарні вікна)
- */
+
 window.alert = (message) => {
     Alert.info("Повідомлення", message);
 };

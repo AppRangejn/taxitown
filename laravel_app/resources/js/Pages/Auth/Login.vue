@@ -10,9 +10,9 @@ const form = ref({
 });
 const errors = ref({});
 const isProcessing = ref(false);
-const theme = ref('light'); // Змінна для теми
+const theme = ref('light');
 const router = useRouter();
-// Логіка для зміни теми
+
 const applyTheme = () => {
     if (theme.value === 'dark') {
         document.documentElement.classList.add('dark');
@@ -22,7 +22,7 @@ const applyTheme = () => {
 };
 
 onMounted(() => {
-    // Завантажуємо збережену тему
+
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
         theme.value = savedTheme;
@@ -39,7 +39,7 @@ const submit = async () => {
         const response = await axios.post('/login', form.value);
 
         if (response.status === 204) {
-            // 3. Замінюємо редірект
+
             await router.push('/');
         }
     } catch (e) {
@@ -60,7 +60,7 @@ const submit = async () => {
 <template>
     <div class="flex items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-100 dark:bg-gradient-to-br dark:from-gray-900 dark:to-black transition-colors duration-300">
         <div class="w-full max-w-sm sm:max-w-md p-6 sm:p-8 bg-white dark:bg-gray-800/40 backdrop-blur-xl shadow-lg rounded-2xl border border-gray-200 dark:border-yellow-400/30">
-            <!-- Логотип і заголовок -->
+
             <div class="text-center">
                 <img src="/taxi-icon.png" alt="TaxiTown Logo" class="mx-auto h-12 w-auto" />
                 <h2 class="mt-4 text-2xl font-extrabold text-gray-900 dark:text-white tracking-tight">
@@ -74,7 +74,7 @@ const submit = async () => {
                 </p>
             </div>
 
-            <!-- Форма -->
+
             <form @submit.prevent="submit" class="mt-6 space-y-4">
                 <div class="space-y-3">
                     <div>
@@ -143,7 +143,6 @@ const submit = async () => {
 </template>
 
 <style scoped>
-/* Стилі для анімацій і ефектів */
 .animate-pulse {
     animation: pulse 1.5s infinite;
 }
@@ -161,7 +160,6 @@ input {
     @apply shadow-sm;
 }
 
-/* Анімація появи форми */
 .max-w-sm {
     animation: fadeIn 0.5s ease-in;
 }
@@ -171,7 +169,6 @@ input {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Адаптивність */
 @media (max-width: 640px) {
     .max-w-sm {
         @apply w-full px-4;

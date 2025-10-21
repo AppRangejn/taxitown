@@ -10,10 +10,6 @@ use App\Http\Controllers\Api\OrderController;
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Всі маршрути для вашого SPA, включаючи API, мають бути тут,
-| щоб вони проходили через middleware "web" з підтримкою сесій.
-|
 */
 
 // Маршрути для сторінки профілю
@@ -25,24 +21,23 @@ Route::middleware('auth')->group(function () {
 // Бекенд-маршрути для автентифікації (login, register, etc)
 require __DIR__ . '/auth.php';
 
-// --- ЄДИНИЙ БЛОК API-МАРШРУТІВ ДЛЯ SPA ---
-// --- ЄДИНИЙ БЛОК API-МАРШРУТІВ ДЛЯ SPA ---
+// ЄДИНИЙ БЛОК API-МАРШРУТІВ ДЛЯ SPA
 Route::prefix('api')->middleware('auth:sanctum')->group(function () {
 
     Route::get('/user', fn (Request $request) => $request->user());
 
-    // --- CRUD користувачів ---
+    // CRUD користувачів
     Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
     Route::post('/users/{user}', [UserController::class, 'update']);
     Route::post('/users/{user}/delete', [UserController::class, 'destroy']);
 
-    // --- Замовлення ---
-    Route::get('/orders', [OrderController::class, 'index']); // користувач бачить свої
+    // Замовлення
+    Route::get('/orders', [OrderController::class, 'index']);
     Route::post('/orders', [OrderController::class, 'store']);
     Route::delete('/orders/{id}', [OrderController::class, 'destroy']);
 
-    // ✅ додай для адміна
+    // для адміна
     Route::get('/admin/orders', [OrderController::class, 'indexAdmin']);
     Route::put('/admin/orders/{id}', [OrderController::class, 'update']);
     Route::delete('/admin/orders/{id}', [OrderController::class, 'destroy']);
@@ -50,9 +45,9 @@ Route::prefix('api')->middleware('auth:sanctum')->group(function () {
 
 
 
-// --- SPA Fallback Route (ЗАВЖДИ ОСТАННІЙ) ---
-// Цей маршрут перехоплює будь-які GET-запити, що не співпали,
-// і повертає головний Blade-шаблон, який завантажує ваш Vue-додаток.
+// SPA Fallback Route (ЗАВЖДИ ОСТАННІЙ)
+// Цей маршрут перехоплює будь-які GET-запити що не співпали
+// і повертає головний Blade-шаблон який завантажує Vue-додаток
 Route::get('/{any}', function () {
     return view('app');
 })->where('any', '.*');

@@ -14,10 +14,8 @@ const form = ref({
 const errors = ref({});
 const status = ref('');
 
-// Завантажуємо дані користувача
 onMounted(getAuth);
 
-// Заповнюємо форму після завантаження auth.user
 watchEffect(() => {
     if (auth.user) {
         form.value.name = auth.user.name;
@@ -25,7 +23,6 @@ watchEffect(() => {
     }
 });
 
-// Збереження змін
 const submit = async () => {
     errors.value = {};
     status.value = '';
@@ -41,7 +38,6 @@ const submit = async () => {
     }
 };
 
-// Повернутись назад
 const goBack = () => router.back();
 
 // Тема
@@ -70,7 +66,6 @@ onMounted(() => {
                 backdrop-blur-xl shadow-lg rounded-2xl border border-gray-200 dark:border-yellow-400/30
                 card-fade-in">
 
-            <!-- Заголовок -->
             <div class="text-center mb-6">
                 <h2 class="text-2xl font-extrabold text-gray-900 dark:text-white">
                     Редагувати профіль
@@ -80,7 +75,6 @@ onMounted(() => {
                 </p>
             </div>
 
-            <!-- Форма -->
             <form @submit.prevent="submit" class="space-y-4">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-900 dark:text-gray-200">Ім’я</label>
@@ -114,7 +108,6 @@ onMounted(() => {
                     <p v-if="errors.email" class="text-xs text-red-500 dark:text-red-400 mt-1 animate-pulse">{{ errors.email[0] }}</p>
                 </div>
 
-                <!-- Кнопки -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-3 sm:space-y-0 pt-2">
                     <button type="submit"
                             class="w-full sm:w-auto px-6 py-2.5 bg-yellow-500 dark:bg-yellow-400 text-black dark:text-black

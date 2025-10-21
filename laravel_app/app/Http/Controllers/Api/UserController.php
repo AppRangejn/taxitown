@@ -10,7 +10,6 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    // Отримати список користувачів
     public function index(Request $request)
     {
         if ($request->user()->role !== 'admin') {
@@ -19,7 +18,6 @@ class UserController extends Controller
 
         $query = User::query();
 
-        // --- Пошук ---
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function($q) use ($search) {
@@ -29,7 +27,6 @@ class UserController extends Controller
             });
         }
 
-        // --- Сортування ---
         $sortField = $request->input('sortField', 'id'); // поле за замовчуванням id
         $sortOrder = $request->input('sortOrder', 'desc'); // порядок за замовчуванням desc
         if (in_array($sortField, ['id','name','email','role']) && in_array($sortOrder, ['asc','desc'])) {
@@ -40,7 +37,6 @@ class UserController extends Controller
     }
 
 
-    // Додати нового користувача
     public function store(Request $request)
     {
         if ($request->user()->role !== 'admin') {
@@ -64,7 +60,7 @@ class UserController extends Controller
         return response()->json($user, 201);
     }
 
-    // Оновити дані користувача (використовуємо Route Model Binding)
+
     public function update(Request $request, User $user)
     {
         if ($request->user()->role !== 'admin') {
@@ -75,7 +71,7 @@ class UserController extends Controller
             'name'  => 'required|string|max:255',
             'email' => ['required','string','email','max:255', Rule::unique('users')->ignore($user->id)],
             'role'  => 'required|string|in:user,admin',
-            'password' => 'nullable|string|min:8', // Поле паролю не є обов'язковим при оновленні
+            'password' => 'nullable|string|min:8',
         ]);
 
         $user->fill([
@@ -93,14 +89,12 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    // Видалити користувача (використовуємо Route Model Binding)
     public function destroy(Request $request, User $user)
     {
         if ($request->user()->role !== 'admin') {
             return response()->json(['message' => 'Forbidden'], 403);
         }
 
-        // Забороняємо адміну видаляти самого себе
         if ($request->user()->id === $user->id) {
             return response()->json(['message' => 'Ви не можете видалити власний акаунт'], 403);
         }

@@ -2,7 +2,6 @@
     <div class="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-300">
         <div class="max-w-6xl mx-auto space-y-4">
 
-            <!-- Header -->
             <div class="flex justify-between items-center">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Список водіїв</h2>
                 <button @click="openAdd"
@@ -11,7 +10,6 @@
                 </button>
             </div>
 
-            <!-- Search & Sort -->
             <div class="flex gap-2 items-center">
                 <input v-model="search" @input="fetchDrivers" placeholder="Пошук..."
                        class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-400 focus:outline-none dark:bg-gray-800 dark:text-white dark:border-gray-700 transition-all duration-300"/>
@@ -30,11 +28,9 @@
                 </select>
             </div>
 
-            <!-- Loading/Error -->
             <div v-if="loading" class="text-gray-500 dark:text-gray-400">Завантаження...</div>
             <div v-if="error" class="text-red-500 dark:text-red-400">{{ error }}</div>
 
-            <!-- Drivers Table -->
             <div class="overflow-x-auto">
                 <table v-if="drivers.length" class="min-w-full bg-white dark:bg-gray-800 rounded-2xl shadow-lg border-collapse">
                     <thead>
@@ -80,7 +76,6 @@
                 </div>
             </div>
 
-            <!-- Modal Add/Edit -->
             <transition name="fade">
                 <div v-if="showModal"
                      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -137,7 +132,6 @@
                 </div>
             </transition>
 
-            <!-- Modal Delete -->
             <transition name="fade">
                 <div v-if="showDeleteModal"
                      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -191,10 +185,8 @@ const search = ref('')
 const sortField = ref('id')
 const sortOrder = ref('desc')
 
-// ✅ кількість водіїв
 const driversCount = computed(() => drivers.value.length)
 
-// --- CSRF ---
 const initCsrf = async () => {
     try {
         await axios.get('/sanctum/csrf-cookie')
@@ -203,7 +195,6 @@ const initCsrf = async () => {
     }
 }
 
-// --- Fetch Drivers ---
 const fetchDrivers = async () => {
     loading.value = true
     error.value = null
@@ -216,7 +207,6 @@ const fetchDrivers = async () => {
             }
         })
 
-        // ✅ підтримуємо обидва формати
         if (Array.isArray(res.data)) {
             drivers.value = res.data
         } else if (res.data.drivers) {
@@ -233,7 +223,6 @@ const fetchDrivers = async () => {
     }
 }
 
-// --- Modals ---
 const openAdd = () => {
     modalMode.value = 'add'
     form.value = { id: null, name: '', phone: '', experience_years: 0, photo: '', status: 'free', car_type: '' }
@@ -253,7 +242,6 @@ const closeModal = () => {
     showDeleteModal.value = false
 }
 
-// --- Submit (Add/Edit) ---
 const submitForm = async () => {
     try {
         await initCsrf()
@@ -269,7 +257,6 @@ const submitForm = async () => {
     }
 }
 
-// --- Delete ---
 const deleteDriver = async () => {
     try {
         await initCsrf()
@@ -281,7 +268,6 @@ const deleteDriver = async () => {
     }
 }
 
-// --- On Mounted ---
 fetchDrivers()
 </script>
 

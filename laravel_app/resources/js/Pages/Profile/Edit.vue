@@ -6,10 +6,8 @@ import { useRouter } from 'vue-router';
 const { auth, getAuth } = useAuth();
 const router = useRouter();
 
-// Завантажуємо auth
 onMounted(getAuth);
 
-// Форматуємо дату реєстрації
 const registrationDate = computed(() => {
     if (!auth.user || !auth.user.created_at) return '';
     return new Date(auth.user.created_at).toLocaleDateString('uk-UA', {
@@ -19,13 +17,11 @@ const registrationDate = computed(() => {
     });
 });
 
-// Навігація
 const goBack = () => router.back();
 const goToEdit = () => router.push({ name: 'profile.edit' });
 const goToPassword = () => router.push({ name: 'profile.password' });
 const goToDelete = () => router.push({ name: 'profile.delete' });
 
-// Тема
 const theme = ref('light');
 const applyTheme = () => {
     if (theme.value === 'dark') {
@@ -54,7 +50,7 @@ onMounted(() => {
                 backdrop-blur-xl shadow-lg rounded-2xl border border-gray-200 dark:border-yellow-400/30
                 card-fade-in">
 
-            <!-- Назад -->
+
             <div @click="goBack"
                  class="inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-6 cursor-pointer transition-colors duration-300">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -63,7 +59,6 @@ onMounted(() => {
                 <span>Назад</span>
             </div>
 
-            <!-- Картка профілю -->
             <div class="text-center mb-6">
                 <img src="/taxi-icon.png" alt="Logo" class="mx-auto h-12 w-auto mb-4"/>
                 <h1 class="text-2xl font-extrabold text-gray-900 dark:text-white">{{ auth.user.name }}</h1>
@@ -72,7 +67,6 @@ onMounted(() => {
                 </p>
             </div>
 
-            <!-- Особисті дані -->
             <div class="space-y-3 mb-6">
                 <div class="flex justify-between px-4 py-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
                     <span class="text-gray-500 dark:text-gray-400">ID Користувача:</span>
@@ -88,7 +82,6 @@ onMounted(() => {
                 </div>
             </div>
 
-            <!-- Кнопки дій -->
             <div class="space-y-4">
                 <button @click="goToEdit"
                         class="w-full py-2.5 px-4 bg-yellow-500 dark:bg-yellow-400 text-black dark:text-black
@@ -109,7 +102,6 @@ onMounted(() => {
 
         </div>
 
-        <!-- Завантаження -->
         <div v-else class="text-center text-gray-600 dark:text-gray-400">
             Завантаження даних профілю...
         </div>
