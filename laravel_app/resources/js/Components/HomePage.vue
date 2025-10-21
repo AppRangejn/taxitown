@@ -415,11 +415,15 @@ async function submitOrder() {
         await loadOrders();
         clearRoute();
     } catch (e) {
-        alert('Помилка: ' + e.message);
+        if (e.response && e.response.status === 401) {
+            alert('⚠️ Необхідно увійти або зареєструватись, щоб зробити замовлення.');
+        } else {
+            alert('❌ Помилка: ' + (e.response?.data?.message || e.message));
+        }
     }
 }
 
-function enterRouteMode() {
+    function enterRouteMode() {
     mapMode.value = 'route';
 }
 

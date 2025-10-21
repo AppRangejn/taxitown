@@ -8,6 +8,8 @@ import EditProfile from "@/Pages/Profile/Edit.vue";
 import UpdateProfileInformationForm from "@/Pages/Profile/Partials/UpdateProfileInformationForm.vue";
 import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
 import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
+import ContactsPage from '../Pages/ContactsPage.vue'
+import PrivacyPolicyPage from '../Pages/PrivacyPolicyPage.vue'
 
 const routes = [
     { path: '/', name: 'home', component: HomePage },
@@ -17,6 +19,8 @@ const routes = [
     { path: '/profile/edit', name: 'profile.edit', component: UpdateProfileInformationForm, meta: { requiresAuth: true } },
     { path: '/profile/password', name: 'profile.password', component: UpdatePasswordForm, meta: { requiresAuth: true } },
     { path: '/profile/delete', name: 'profile.delete', component: DeleteUserForm, meta: { requiresAuth: true } },
+    { path: '/contacts', component: ContactsPage },
+    { path: '/privacy', component: PrivacyPolicyPage },
 ];
 
 const router = createRouter({
